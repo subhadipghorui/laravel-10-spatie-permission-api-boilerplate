@@ -5,8 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use App\Models\Permission;
+use App\Models\Role;
 
 class UserRolePermissionSeeder extends Seeder
 {
@@ -18,11 +18,13 @@ class UserRolePermissionSeeder extends Seeder
         User::truncate();
         $superAdmin = \App\Models\User::factory()->create([
                 'username' => 'superadmin',
+                'email' => 'superadmin@example.com',
                 'is_superadmin' => true,
         ]);
 
         $admin = \App\Models\User::factory()->create([
             'username' => 'admin',
+            'email' => 'admin@example.com',
         ]);
         
         
@@ -31,6 +33,18 @@ class UserRolePermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'view-user']);
         Permission::firstOrCreate(['name' => 'update-user']);
         Permission::firstOrCreate(['name' => 'delete-user']);
+
+        Permission::firstOrCreate(['name' => 'list-permission']);
+        Permission::firstOrCreate(['name' => 'store-permission']);
+        Permission::firstOrCreate(['name' => 'view-permission']);
+        Permission::firstOrCreate(['name' => 'update-permission']);
+        Permission::firstOrCreate(['name' => 'delete-permission']);
+
+        Permission::firstOrCreate(['name' => 'list-role']);
+        Permission::firstOrCreate(['name' => 'store-role']);
+        Permission::firstOrCreate(['name' => 'view-role']);
+        Permission::firstOrCreate(['name' => 'update-role']);
+        Permission::firstOrCreate(['name' => 'delete-role']);
         
         Permission::firstOrCreate(['name' => 'list-device']);
         Permission::firstOrCreate(['name' => 'store-device']);
@@ -56,7 +70,17 @@ class UserRolePermissionSeeder extends Seeder
             "store-user",
             "view-user",
             "update-user",
-            'delete-user'
+            'delete-user',
+            "list-role",
+            "store-role",
+            "view-role",
+            "update-role",
+            'delete-role',
+            "list-permission",
+            "store-permission",
+            "view-permission",
+            "update-permission",
+            'delete-permission',
         ]);
         $role = Role::firstOrCreate(['name' => 'device-management']);
         $role->syncPermissions([

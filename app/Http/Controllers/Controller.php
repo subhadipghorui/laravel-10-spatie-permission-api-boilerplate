@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
@@ -18,10 +19,12 @@ class Controller extends BaseController
         return response()->json(["error" => true, "message" => $message, "data"=> $data], $responseCode); 
     }
 
-    public function handleException($e, $sendResponse = true){
+    public function handleException(Exception $e, $sendResponse = true){
         $data['exception_message'] = $e->getMessage();
         $data['exception_code'] = $e->getCode();
-        \Log::error("Exception code: ".$data['exception_code']." - ".$data['exception_message']);
+        $data['exception_line'] = $e->getLine();
+        $data['exception_file'] = $e->getFile();
+        \Log::error("Exception Message: ".$data['exception_message']." __LINE__".$data['exception_line']." __FILE__ ".$data['exception_file']);
         if($sendResponse){
             return $this->sendError("Something went wrong.", $data, 400); 
         }else{
